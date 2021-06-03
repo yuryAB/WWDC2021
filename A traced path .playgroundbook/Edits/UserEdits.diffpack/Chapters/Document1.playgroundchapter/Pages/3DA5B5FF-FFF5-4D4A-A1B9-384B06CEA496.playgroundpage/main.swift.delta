@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>BaseFile</key>
+	<string>Chapters/Document1.playgroundchapter/Pages/template.playgroundpage/main.swift</string>
+	<key>Diffs</key>
+	<array>
+		<dict>
+			<key>ModifiedContent</key>
+			<string>// A hero starts his path
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+import SpriteKit
+import PlaygroundSupport
+</string>
+			<key>ModifiedRange</key>
+			<string>{6710, 175}</string>
+			<key>OriginalContent</key>
+			<string>// /*#-localizable-zone(shapesTemplate1)*/Sets up the LiveView./*#-end-localizable-zone*/
+</string>
+			<key>OriginalRange</key>
+			<string>{6710, 90}</string>
+		</dict>
+		<dict>
+			<key>ModifiedContent</key>
+			<string>let desert = Graphic(image: #imageLiteral(resourceName: "heroIntro.png"))
+let acceptButton = Graphic(image: #imageLiteral(resourceName: "Accpet.png"))
+scene.backgroundColor = #colorLiteral(red: 0.058814115822315216, green: 0.05882953852415085, blue: 0.05881073325872421, alpha: 1.0)
+desert.scale = 0.6
+
+scene.place(desert, at: Point(x: 0, y: 400))
+
+let duration:Double = 10
+let zoomIn = SKAction.scale(to: 0.9, duration: duration)
+let zoomOut = SKAction.scale(to: 0.6, duration: duration)
+let zoom = SKAction.sequence([zoomIn,zoomOut])
+let yanim = SKAction.moveBy(x: -100, y: -30, duration: 10)
+//wizardKing.run(yEixo)
+desert.run(zoom)
+desert.run(yanim)
+
+let curtain = Curtain()
+curtain.curtainPosition(to: VerticalPosition(top: 500, bottom: -330))
+theChallenge(writes: IntroMageHero)
+
+
+let call =  Label(text: "A journey to dethrone the wizard king\n is about to begin\nare you prepared to accept the challenge?", color:  #colorLiteral(red: 0.6859978437423706, green: 0.6819220185279846, blue: 0.6891321539878845, alpha: 1.0), font: .Verdana,size:25)
+call.fadeOut(after: 0)
+acceptButton.fadeOut(after: 0)
+acceptButton.scale = 0.65
+
+scene.place(call, at: Point(x: 0, y: -100))
+scene.place(acceptButton, at: Point(x: 0, y: -230))
+
+public func theChallenge(writes:[Write]){
+    let writeText = Label(text: "", color:  #colorLiteral(red: 0.6859978437423706, green: 0.6819220185279846, blue: 0.6891321539878845, alpha: 1.0), font: .Verdana)
+    let nextButton = Graphic(image: #imageLiteral(resourceName: "arrowButton.png"))
+    nextButton.scale = 0.4
+    scene.place(nextButton, at:Point(x: 180, y: -150) )
+    var count = 0
+    let writesCount = writes.count
+    var write = writes[count]
+    writeText.text = write.text
+    scene.place(writeText,at: write.position)
+    
+    nextButton.setHandler(for: .touch) { _ in
+        if count &lt; writesCount - 1 {
+            count += 1
+            write = writes[count]
+            writeText.fadeOut(after: 0.5)
+            writeText.text = write.text
+            scene.place(writeText,at: write.position)
+            writeText.fadeIn(after: 0.5)
+        } else {
+            nextButton.remove()
+            writeText.remove()
+            call.fadeIn(after: 1)
+            acceptButton.fadeIn(after: 1)
+        }
+    }
+}
+acceptButton.setHandler(for: .touch) { _ in
+    PlaygroundPage.current.navigateTo(page: .next)
+}
+
+
+</string>
+			<key>ModifiedRange</key>
+			<string>{6902, 2360}</string>
+			<key>OriginalContent</key>
+			<string>// /*#-localizable-zone(shapesTemplate2)*/Creates a circle graphic./*#-end-localizable-zone*/
+let circle = Graphic.circle(radius: 100, color: #colorLiteral(red: 0.4550631046, green: 0.6557807326, blue: 0.9979295135, alpha: 1.0))
+scene.place(circle, at: Point.zero)
+circle.isDraggable = true
+</string>
+			<key>OriginalRange</key>
+			<string>{6817, 291}</string>
+		</dict>
+	</array>
+	<key>FormatVersion</key>
+	<integer>2</integer>
+</dict>
+</plist>

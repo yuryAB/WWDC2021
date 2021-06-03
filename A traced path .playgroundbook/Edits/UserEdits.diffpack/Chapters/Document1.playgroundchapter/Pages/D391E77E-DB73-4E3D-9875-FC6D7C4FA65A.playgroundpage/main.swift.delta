@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>BaseFile</key>
+	<string>Chapters/Document1.playgroundchapter/Pages/template.playgroundpage/main.swift</string>
+	<key>Diffs</key>
+	<array>
+		<dict>
+			<key>ModifiedContent</key>
+			<string>/*
+ On difficult times, an act
+ that is even symbolic is able
+ to fill people's hearts with
+ hope, the hero made sure that
+ everyone in the kingdom knew
+ that from that day on things
+ would get better.
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ */
+import SpriteKit
+import PlaygroundSupport
+</string>
+			<key>ModifiedRange</key>
+			<string>{6710, 288}</string>
+			<key>OriginalContent</key>
+			<string>// /*#-localizable-zone(shapesTemplate1)*/Sets up the LiveView./*#-end-localizable-zone*/
+</string>
+			<key>OriginalRange</key>
+			<string>{6710, 90}</string>
+		</dict>
+		<dict>
+			<key>ModifiedContent</key>
+			<string>let homeland = Graphic(image: #imageLiteral(resourceName: "heroFinalPerspective2.png"))
+let hopeSignal = Graphic(image: #imageLiteral(resourceName: "heroFinalPerspectiveSignal.png"))
+homeland.scale = 0.8
+hopeSignal.scale = 0.8
+
+let shake = 5
+let slowShaking1 = SKAction.moveBy(x: 5, y: 10, duration: 1)
+let slowShaking2 = SKAction.moveBy(x: -10, y: 5, duration: 1)
+let slowShaking3 = SKAction.moveBy(x: 5, y: -10, duration: 1)
+let slowShaking4 = SKAction.moveBy(x: -10, y: -10, duration: 1)
+
+
+let slowShaking5 = SKAction.sequence([slowShaking1,slowShaking2,slowShaking3,slowShaking4])
+
+let slowShaking = SKAction.repeatForever(slowShaking5)
+
+homeland.run(slowShaking)
+hopeSignal.run(slowShaking)
+
+let hopeAppear = SKAction.sequence(
+    [
+        .fadeAlpha(to: 0.0, duration: 0.5),
+        .fadeAlpha(to: 1.0, duration: 0.5),
+        .fadeAlpha(to: 0.0, duration: 0.5),
+        .fadeAlpha(to: 1.0, duration: 0.5),]
+)
+
+hopeSignal.alpha = 0.0
+
+public func theFinal(writes:[Write]){
+    let writeText = Label(text: "", color:  #colorLiteral(red: 0.9999960065, green: 1.0, blue: 1.0, alpha: 1.0), font: .Verdana)
+    let nextButton = Graphic(image: #imageLiteral(resourceName: "arrowButton.png"))
+    nextButton.scale = 0.4
+    scene.place(nextButton, at:Point(x: 180, y: -150) )
+    var count = 0
+    let writesCount = writes.count
+    var write = writes[count]
+    writeText.text = write.text
+    scene.place(writeText,at: write.position)
+    
+    nextButton.setHandler(for: .touch) { _ in
+        if count &lt; writesCount - 1 {
+            count += 1
+            write = writes[count]
+            writeText.fadeOut(after: 0.5)
+            writeText.text = write.text
+            scene.place(writeText,at: write.position)
+            writeText.fadeIn(after: 0.5)
+            if count == 1 {
+                hopeSignal.run(hopeAppear)
+            }
+        } else {
+            nextButton.remove()
+            writeText.remove()
+            curtain.curtainPosition(to: VerticalPosition(top: -200, bottom: -200))
+            delay(of: 2){
+                hopeSignal.remove()
+                homeland.remove()
+                let final = FinalScreen()
+            }
+        }
+    }
+}
+
+scene.place(homeland)
+scene.place(hopeSignal)
+
+theFinal(writes: SignOfHope )
+
+let curtain = Curtain()
+curtain.curtainPosition(to: VerticalPosition(top: 80, bottom: 40))
+</string>
+			<key>ModifiedRange</key>
+			<string>{7015, 2348}</string>
+			<key>OriginalContent</key>
+			<string>// /*#-localizable-zone(shapesTemplate2)*/Creates a circle graphic./*#-end-localizable-zone*/
+let circle = Graphic.circle(radius: 100, color: #colorLiteral(red: 0.4550631046, green: 0.6557807326, blue: 0.9979295135, alpha: 1.0))
+scene.place(circle, at: Point.zero)
+circle.isDraggable = true
+</string>
+			<key>OriginalRange</key>
+			<string>{6817, 291}</string>
+		</dict>
+	</array>
+	<key>FormatVersion</key>
+	<integer>2</integer>
+</dict>
+</plist>

@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>BaseFile</key>
+	<string>Chapters/Document1.playgroundchapter/Pages/template.playgroundpage/main.swift</string>
+	<key>Diffs</key>
+	<array>
+		<dict>
+			<key>ModifiedContent</key>
+			<string>/*
+ 
+ Click on the cards that are on
+ the table to define which path
+ the mage hero will follow
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import SpriteKit
+</string>
+			<key>ModifiedRange</key>
+			<string>{6710, 216}</string>
+			<key>OriginalContent</key>
+			<string>// /*#-localizable-zone(shapesTemplate1)*/Sets up the LiveView./*#-end-localizable-zone*/
+</string>
+			<key>OriginalRange</key>
+			<string>{6710, 90}</string>
+		</dict>
+		<dict>
+			<key>ModifiedContent</key>
+			<string>let title = Label(text: "Trace his path", color:  #colorLiteral(red: 1.0002920627593994, green: 0.9429516196250916, blue: 0.576911985874176, alpha: 1.0), font: .Verdana, size: 40)
+let tableBody = Graphic.rectangle(width: 750, height: 900, cornerRadius: 0, color:  #colorLiteral(red: 0.19993332028388977, green: 0.3260909914970398, blue: 0.6322886943817139, alpha: 1.0))
+let backUI = Graphic.rectangle(width: 1000, height: 800, cornerRadius: 4, color:  #colorLiteral(red: 0.19993332028388977, green: 0.3260909914970398, blue: 0.6322886943817139, alpha: 0.1287275908009106))
+let table = Graphic(image: #imageLiteral(resourceName: "boardShapeModel.png"))
+let hero = Graphic(image: #imageLiteral(resourceName: "MageHeroCard.png"))
+let king = Graphic(image: #imageLiteral(resourceName: "WizardKingCard.png"))
+let playButton = Graphic(image: #imageLiteral(resourceName: "provisorio.png"))
+let cardScale = 0.18
+
+table.scale = 0.8
+hero.scale = cardScale
+king.scale = cardScale
+playButton.scale = cardScale+0.2
+playButton.fadeOut(after: 0)
+
+scene.place(table, at: Point(x: 0, y: -5))
+scene.place(hero, at: PathPositions.first.PointForm())
+scene.place(king, at: PathPositions.seventh.PointForm())
+scene.place(playButton, at: Point(x: 325, y: 120))
+scene.place(title, at: Point(x: 0, y: 240))
+
+public class StoryPath {
+    public let id:Int
+    public let Position:CGPoint
+    public let category:CardCategory
+    public let storyPointName:String
+    
+    public var ChapterName = "none"
+    public var StoryPoint = Graphic(image: #imageLiteral(resourceName: "cardBody.png"))
+    
+    init(id: Int, position:CGPoint, category:CardCategory, pointName:String){
+        self.id = id
+        self.Position = position
+        self.category = category
+        self.storyPointName = pointName
+        
+        StoryPoint.scale = 0.04
+        scene.place(StoryPoint, at: position.PointForm())
+        
+        StoryPoint.setHandler(for: .touch) { _ in
+            showBackUI()
+            currentId = id
+            for card in TableCard.allCards{
+                if card.category == category{
+                    if !card.selected{
+                        card.tablePosition()
+                        card.TouchSetup()
+                        card.infoSheet.TouchSetup()
+                    }
+                }
+            }
+        }
+    }
+    func getCinematic()-&gt;StoryScene?{
+        var story:StoryScene?
+        for cap in Chapter.allChapters{
+            if self.ChapterName == cap.name{
+                story = cap.cinematic
+            }
+        }
+        return story
+    }
+}
+
+backUI.setHandler(for: .touch) { _ in
+    for card in TableCard.allCards{
+        card.hideMode()
+        hideBackUI()
+    }
+}
+
+func hideBackUI(){
+    backUI.fadeOut(after: 0.1)
+}
+
+func showBackUI(){
+    backUI.fadeIn(after: 0.5)
+}
+
+var currentId:Int = 0
+
+func StoryPoint(position:Point, category:CardCategory, id:Int)-&gt; Graphic{
+    let storyPoint = Graphic(image: #imageLiteral(resourceName: "cardBody.png"))
+    storyPoint.scale = 0.05
+    scene.place(storyPoint, at: position)
+    return storyPoint
+}
+
+var StoryPaths:[StoryPath] = [
+    StoryPath(id: 1, position: PathPositions.second, category: .challenge,pointName:"path1"),
+    StoryPath(id: 2, position: PathPositions.third, category: .challenge,pointName:"path2"),
+    StoryPath(id: 3, position: PathPositions.fourth, category: .rest,pointName:"rest"),
+    StoryPath(id: 4, position: PathPositions.fifth, category: .challenge,pointName:"path3"),
+    StoryPath(id: 5, position: PathPositions.sixth, category: .challenge,pointName:"path4")
+]
+
+scene.place(backUI, at: Point(x: 0, y: -60))
+backUI.fadeOut(after: 0)
+
+func hideTheOtherCards(from exception:TableCard){
+    for card in TableCard.allCards {
+        if card.category == exception.category {
+            if card.chapterName != exception.chapterName{
+                if !card.selected{
+                    card.hideMode(type: .fade)
+                }
+            }
+        }
+    }
+}
+
+func showTheOtherCards(from exception:TableCard){
+    for card in TableCard.allCards {
+        if card.category == exception.category {
+            if card.chapterName != exception.chapterName{
+                if !card.selected{
+                    card.tablePosition()
+                }
+            }
+        }
+    }
+}
+
+func becomeTheChosen(this chosen:TableCard){
+    for card in TableCard.allCards {
+        if card.chapterName == chosen.chapterName {
+            card.selected = true
+        }else if card.storyPointName == chosen.storyPointName{
+            card.selected = false
+            card.storyPointName = "none"
+        }
+    }
+}
+
+extension TableCard {
+    func TouchSetup(){
+        self.onTouch { [self] in
+            if self.presentation{
+                hideTheOtherCards(from: self)
+            }else{
+                showTheOtherCards(from: self)
+            }
+        }
+    }
+}
+
+extension InfoSheet{
+    func TouchSetup(){
+        self.onTouch {
+            for card in TableCard.allCards{
+                if card.chapterName == self.chapterName{
+                    let index = currentId-1
+                    StoryPaths[index].ChapterName = self.chapterName
+                    card.storyPointName = StoryPaths[index].storyPointName
+                    becomeTheChosen(this: card)
+                    StoryPaths[index].StoryPoint.image = card.card.image
+                    card.hideMode(duration: 0.9)
+                    StoryPaths[currentId-1].StoryPoint.run(SKAction.scale(to: 0.19, duration: 0.3))
+                    hideTheOtherCards(from: card)
+                    hideBackUI()
+                    verifyPathTraced()
+                }
+            }
+        }
+    }
+}
+
+func verifyPathTraced(){
+    var confirmation = true
+    for story in StoryPaths{
+        if story.ChapterName == "none"{
+            confirmation = false
+        }
+    }
+    if confirmation{
+        let up = SKAction.scale(by: 0.9, duration: 1)
+        let down = SKAction.scale(to: 0.5, duration: 1)
+        let pulse = SKAction.sequence([up,down])
+        
+        playButton.fadeIn(after: 0.5)
+        playButton.run(SKAction.repeatForever(pulse))
+    }
+}
+
+playButton.setHandler(for: .touch) { _ in
+    var storyScenes:[StoryScene] = []
+    storyScenes.append(Cinematic(.intro))
+    
+    var pathsSelecteds:[StoryScene] = []
+    for story in StoryPaths{
+        storyScenes.append(story.getCinematic()!)
+        pathsSelecteds.append(story.getCinematic()!)
+        story.StoryPoint.remove()
+    }
+    
+    storyScenes.append(Cinematic(.bossMeeting))
+    storyScenes.append(Cinematic(.bossBattlePT1))
+    
+    let findRest = pathsSelecteds[2].restType
+    switch findRest {
+    case .mentor:
+        storyScenes.append(Cinematic(.bossBattleMentorMode))
+    case .group:
+        storyScenes.append(Cinematic(.bossBattleGroupMode))
+    case .meditation:
+        storyScenes.append(Cinematic(.bossBattleMeditationMode))
+    case .other:
+        print("error")
+    }
+    
+    storyScenes.append(Cinematic(.crowDestruction))
+    backUI.remove()
+    table.remove()
+    title.remove()
+    scene.backgroundColor = #colorLiteral(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
+    Journey(storyScenes: storyScenes).playJourney()
+    
+}
+
+for card in TableCard.allCards{
+    card.placeCard()
+}
+
+</string>
+			<key>ModifiedRange</key>
+			<string>{6943, 7250}</string>
+			<key>OriginalContent</key>
+			<string>// /*#-localizable-zone(shapesTemplate2)*/Creates a circle graphic./*#-end-localizable-zone*/
+let circle = Graphic.circle(radius: 100, color: #colorLiteral(red: 0.4550631046, green: 0.6557807326, blue: 0.9979295135, alpha: 1.0))
+scene.place(circle, at: Point.zero)
+circle.isDraggable = true
+</string>
+			<key>OriginalRange</key>
+			<string>{6817, 291}</string>
+		</dict>
+	</array>
+	<key>FormatVersion</key>
+	<integer>2</integer>
+</dict>
+</plist>
